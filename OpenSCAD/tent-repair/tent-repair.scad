@@ -9,7 +9,7 @@ standoff_od = 14;
 standoff_or = standoff_od/2;
 standoff_w = standoff_h + standoff_p + pole_d + wall_t*2;
 standoff_round_r = 5.15;
-standoff_nut_r = 8.75/2;
+standoff_hex_r = 8.75/2;
 type = "round";
 hole_d = 5;
 hole_r = hole_d/2;
@@ -33,7 +33,7 @@ module standoff(type = "round") {
 			cylinder(h=standoff_h, r=standoff_round_r);
 		}
 		if (type == "hex") {
-			cylinder(h=standoff_h, r=standoff_round_r, $fn=6);
+			cylinder(h=standoff_h, r=standoff_hex_r, $fn=6);
 		}
 	} 
 }
