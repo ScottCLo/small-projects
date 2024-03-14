@@ -1,6 +1,7 @@
 function in_to_mm(in) = in * 25.4;
 
-$fn = 64;
+$fa = 1;
+$fs = .5;
 thickness = 10;
 
 throat_d = 45;
