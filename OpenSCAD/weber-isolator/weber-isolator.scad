@@ -45,14 +45,12 @@ module flange(){
 				translate([0,-bolt_space/2,0]) circle(r = ear_r);
 			}
 			translate([x_off,bolt_space/2 + y_off,0])rotate(a = [0,0,-90-angle]) square([flange_r,port_w]); 
-			//rotate([0,0,-angle])translate([-port_w,0,0]) square(size = [port_w + thickness/2 ,port_h], center = false);
 		}
 		translate([0,bolt_space/2,0]) circle(d = bolt_d);
 		translate([0,-bolt_space/2,0]) circle(d = bolt_d);
 		circle(d = throat_d);
 		}
 }
-//flange();
 
 module ring_groove(){
 	linear_extrude(height = gland_h) difference() {
@@ -60,8 +58,6 @@ module ring_groove(){
 		circle(d = gland_id);
 	}
 }
-
-//ring_groove();
 
 module port() {
 	translate([0,port_h,thickness/2]) rotate([90,0,0]){
@@ -84,6 +80,4 @@ module isolator(){
 		}
 }
 
-
-//rotate([0,0,-angle])port();
 isolator();
