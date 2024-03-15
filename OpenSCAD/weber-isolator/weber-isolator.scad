@@ -2,80 +2,99 @@ function in_to_mm(in) = in * 25.4;
 
 $fn = 32;
 
-thickness = 8;
+isolator_thickness = 8;
 
 throat_d = 45;
-throat_spacing = 90;
 
-bolt_d = 8.5;
-bolt_space = 72;
+bolt_hole_d = 8.5;
+bolt_spacing = 72;
+bolt_spacing_center = bolt_spacing/2;
 
-ear_r = 12;
-o_d = 62;
-angle = 16;
+flange_ear_r = 12;
+flange_w = 62;
+flange_h = bolt_spacing_center + flange_ear_r;
+flange_angle = 16;
 
-flange_r = bolt_space/2 + ear_r;
+port_extention_x_offset = cos(flange_angle) * flange_ear_r;
+port_extention_y = sin(flange_angle) * flange_ear_r;
+port_extention_x = bolt_spacing_center + port_extention_x_offset;
+port_extention_tan_hyp = flange_ear_r / cos(flange_angle);
+port_extention_tan_opp = flange_ear_r * sin(flange_angle);
+port_extention_hyp = bolt_spacing_center + port_extention_tan_hyp;
+port_extention_w = port_extention_hyp * sin(flange_angle) - port_extention_tan_opp + isolator_thickness/2;
 
-
-x_off = sin(angle) * ear_r;
-y_off = cos(angle) * ear_r;
-off_l = flange_r - y_off + ear_r;
-
-port_cham = 0.5;
 port_d = 2;
-tube_d = 3;
+port_l = port_extention_hyp * cos(flange_angle);
+
+tube_od = 3;
 tube_depth = 10;
-port_h = off_l * cos(angle);
-port_w = off_l * sin(angle) - x_off + thickness/2;
 
+// o-ring dash code -135
+oring_groove_h = in_to_mm(0.078);
+oring_groove_w = in_to_mm(0.121);
+oring_groove_id = in_to_mm(1.954);
+oring_groove_od = oring_groove_id + oring_groove_w*2;
 
-// oring dash code = -135
-gland_h = in_to_mm(0.078);
-gland_w = in_to_mm(0.121);
-gland_id = in_to_mm(1.954);
-
-
-module flange(){
-	difference() {
-		union(){
-			hull(){
-				translate([0,bolt_space/2,0]) circle(r = ear_r);
-				circle(d = o_d);
-				translate([0,-bolt_space/2,0]) circle(r = ear_r);
-			}
-			translate([x_off,bolt_space/2 + y_off,0])rotate(a = [0,0,-90-angle]) square([flange_r,port_w]); 
-		}
-		translate([0,bolt_space/2,0]) circle(d = bolt_d);
-		translate([0,-bolt_space/2,0]) circle(d = bolt_d);
-		circle(d = throat_d);
-		}
-}
-
-
-module ring_groove(){
-	linear_extrude(height = gland_h) difference() {
-		circle(d = gland_id + gland_w * 2);
-		circle(d = gland_id);
+module radial_tile(r, n){
+	for (i = [0:n]) {
+		rotate([0,0,360 / n * i])translate([r,0,0]) 
+			children();
 	}
 }
 
-module port() {
-	translate([0,port_h,thickness/2]) rotate([90,0,0]){
-		union(){
-			cylinder(d = port_d, h = port_h);
-			cylinder(d = tube_d, tube_depth);
-			translate([0,0,-1]) cylinder(h = port_cham + 1, d1 = tube_d + port_cham + 1, d2 = tube_d);
+module flange(){
+	hull(){
+		cylinder(d = flange_w,h =isolator_thickness);
+		radial_tile(bolt_spacing_center, 2) cylinder(r = flange_ear_r, h = isolator_thickness);
+	}
+}
+
+module port_extention(){
+	hull(){
+		translate([port_extention_x, port_extention_y,0])
+			rotate(a = [0,0,90 + flange_angle]) 
+			cube([port_extention_w,flange_w/2,isolator_thickness]);
+		translate([bolt_spacing_center,0,0])cylinder(r=flange_ear_r, h = isolator_thickness);
+	}
+}
+
+module port(){
+	rotate([0,0,flange_angle])translate([port_l,0,isolator_thickness/2]){
+		rotate([0,-90,0])union(){
+			cylinder(h = port_l, d = port_d);
+			cylinder(h = tube_depth, d = tube_od);
 		}
+	}
+}
+
+module throat(){
+	cylinder(d = throat_d, h = isolator_thickness);
+}
+
+module bolt_holes(){
+	radial_tile(bolt_spacing_center, 2)cylinder(d=bolt_hole_d,h=isolator_thickness);
+}
+
+module oring_grooves(){
+	translate([0,0,isolator_thickness/2])rotate([0,90,0])radial_tile(isolator_thickness/2, 2)rotate([0,-90,0])difference(){
+		cylinder(d=oring_groove_od,h=oring_groove_h);
+		cylinder(d=oring_groove_id,h=oring_groove_h);
 	}
 }
 
 module isolator(){
-	difference() {
-		difference(){
-			linear_extrude(height = thickness) flange();
-			ring_groove();
-			translate([0,0,thickness])rotate([180,0,0]) ring_groove();
+	difference(){
+		union(){
+			flange();
+			port_extention();
 		}
-		rotate([0,0,-angle])port();		}
+		union(){
+			port();
+			throat();
+			bolt_holes();
+			oring_grooves();
+		}
+	}
 }
-render()isolator();
+
+isolator();
