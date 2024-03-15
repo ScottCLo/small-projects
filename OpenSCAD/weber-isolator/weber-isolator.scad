@@ -21,7 +21,8 @@ port_extention_x = bolt_spacing_center + port_extention_x_offset;
 port_extention_tan_hyp = flange_ear_r / cos(flange_angle);
 port_extention_tan_opp = flange_ear_r * sin(flange_angle);
 port_extention_hyp = bolt_spacing_center + port_extention_tan_hyp;
-port_extention_w = port_extention_hyp * sin(flange_angle) - port_extention_tan_opp + isolator_thickness/2;
+port_extention_opp = port_extenntion_hyp * sin(flange_angle);
+port_extention_w = port_extention_opp - port_extention_tan_opp + isolator_thickness/2;
 
 port_d = 2;
 port_l = port_extention_hyp * cos(flange_angle);
@@ -36,7 +37,7 @@ oring_groove_id = in_to_mm(1.954);
 oring_groove_od = oring_groove_id + oring_groove_w*2;
 
 module radial_tile(r, n){
-	for (i = [0:n]) {
+	for (i = [0:n-1]) {
 		rotate([0,0,360 / n * i])translate([r,0,0]) 
 			children();
 	}
