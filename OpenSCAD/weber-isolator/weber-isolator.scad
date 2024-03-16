@@ -28,7 +28,7 @@ port_d = 2;
 port_l = port_extention_hyp * cos(flange_angle);
 
 tube_od = 3;
-tube_depth = 10;
+tube_depth = 16;
 
 // o-ring dash code -135
 oring_groove_h = in_to_mm(0.078);
