@@ -4,7 +4,7 @@ $fn = 32;
 
 isolator_thickness = 8;
 
-throat_d = 45;
+throat_d = 40;
 
 bolt_hole_d = 8.5;
 bolt_spacing = 72;
@@ -21,7 +21,7 @@ port_extention_x = bolt_spacing_center + port_extention_x_offset;
 port_extention_tan_hyp = flange_ear_r / cos(flange_angle);
 port_extention_tan_opp = flange_ear_r * sin(flange_angle);
 port_extention_hyp = bolt_spacing_center + port_extention_tan_hyp;
-port_extention_opp = port_extenntion_hyp * sin(flange_angle);
+port_extention_opp = port_extention_hyp * sin(flange_angle);
 port_extention_w = port_extention_opp - port_extention_tan_opp + isolator_thickness/2;
 
 port_d = 2;
