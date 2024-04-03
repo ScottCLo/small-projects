@@ -3,10 +3,10 @@ import cadquery as cq
 def in_to_mm(inch):
     return inch * 25.4
 
-lamp_od = 160
+lamp_od = 159.75
 
 cover_thickness = 3 
-cover_rim_height = 9.5
+cover_rim_height = 9
 cover_od = lamp_od + cover_thickness + cover_thickness * 2
 cover_height = cover_rim_height + cover_thickness
 
@@ -22,13 +22,12 @@ cover = (
     .fillet(2)
     .faces("<Z")
     .workplane()
-    .center(-5,0)
+    .center(-5,-3)
     .text(
         "EXPLORER",
         36,
         -1,
         fontPath="C:/Users/RobSight/AppData/Local/Microsoft/Windows/Fonts/Fastup-Regular.ttf",
-        halign="center"
     )
 )
 
