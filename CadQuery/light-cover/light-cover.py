@@ -25,7 +25,6 @@ cover = (
     .cylinder(height=cover_height, radius=cover_or)
     .faces(">Z")
     .hole(diameter=cover_id ,depth=cover_rim_height)
-    .faces
     .faces("<Z")
     .edges()
     .fillet(2)
@@ -36,7 +35,7 @@ cover = (
         "EXPLORER",
         36,
         -1,
-        fontPath="C:/Users/RobSight/AppData/Local/Microsoft/Windows/Fonts/Fastup-Regular.ttf",
+        fontPath="./Fastup-Regular.ttf",
     )
 )
 
@@ -44,3 +43,4 @@ assy = cq.Assembly()
 assy.add(cover, color=cq.Color(0.1,0.1,0.1), name="body")
 assy.save("out.step", "STEP", mode="fused")
 
+show_object(assy)
