@@ -9,7 +9,7 @@ def in_to_mm(inch):
 
 lamp_od = 159.75
 
-tolerance = -0.05
+tolerance = -0.2
 
 cover_thickness = 3
 cover_rim_height = 9
