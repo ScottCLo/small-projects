@@ -25,6 +25,10 @@ cover = (
     .cylinder(height=cover_height, radius=cover_or)
     .faces(">Z")
     .hole(diameter=cover_id ,depth=cover_rim_height)
+    .faces(">Z")
+    .edges()
+    .all()[1]
+    .chamfer(1)
     .faces("<Z")
     .edges()
     .fillet(2)
