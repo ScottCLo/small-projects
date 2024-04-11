@@ -14,9 +14,18 @@ cover_tab_w = 15
 
 light_d = in_to_mm(3)
 light_r = light_d/2
+light_face_w = 75
 
-profile = (
+light_profile = (
         cq.Sketch()
+        .segment((0,-1), (0, 1), "s1")
+        .arc((0,-1), (1,0), (0,1), "a1")
+        .constrain("s1", "Length", 10)
+        .constrain("s1", "Fixed", None)
+        .constrain("a1", "Radius", 5 )
+        .constrain("s1","a1", "Coincident", None)
+        .constrain("a1","s1", "Coincident", None)
+        .solve()
         )
 
 cover = (
@@ -28,4 +37,4 @@ assy = cq.Assembly()
 assy.add(cover, color=cq.Color(0.1,0.1,0.1), name="body")
 assy.save("out.step", "STEP", mode="fused")
 
-show_object(profile)
+show_object(light_profile)
